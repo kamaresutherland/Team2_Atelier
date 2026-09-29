@@ -1,15 +1,27 @@
+require('dotenv').config();
 const { Pool } = require('pg');
 
-// Update these with your actual Postgres credentials (or use env vars)
-const pool = new Pool({
-  user: process.env.DB_USER || 'postgres',
-  host: process.env.DB_HOST || 'localhost',
-  database: process.env.DB_NAME || 'atelier',
-  password: process.env.DB_PASSWORD || 'password',
-  port: process.env.DB_PORT || 5432,
+// If DATABASE_URL is set (shared online database), use that.
+// Otherwise, fall back to local Postgres settings so teammates who
+// haven't switched over yet aren't broken.
+const pool = process.env.DATABASE_URL
+  ? new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
+    })
+  : new Pool({
+      user: process.env.DB_USER || process.env.USER,
+      host: process.env.DB_HOST || 'localhost',
+      database: process.env.DB_NAME || 'atelier',
+      password: process.env.DB_PASSWORD || 'password',
+      port: process.env.DB_PORT || 5432,
+    });
+
+pool.on('error', (err) => {
+  console.error('Unexpected database error:', err);
 });
 
-// Run once to set up the users table:
+// Run once to set up all tables:
 //   node -e "require('./db').initDb()"
 async function initDb() {
   await pool.query(`
@@ -18,6 +30,8 @@ async function initDb() {
       email VARCHAR(255) UNIQUE NOT NULL,
       password_hash VARCHAR(255) NOT NULL,
       name VARCHAR(255),
+      reset_token VARCHAR(255),
+      reset_token_expires TIMESTAMP,
       created_at TIMESTAMP DEFAULT NOW()
     );
   `);
@@ -25,7 +39,6 @@ async function initDb() {
 
   // ── Caleb: Wardrobe, ClothingItem, WashTracker tables ──────────────
 
-  // Wardrobe table
   await pool.query(`
     CREATE TABLE IF NOT EXISTS wardrobe (
       id SERIAL PRIMARY KEY,
@@ -37,7 +50,6 @@ async function initDb() {
   `);
   console.log('wardrobe table ready');
 
-  // ClothingItem table (includes description field - TM02-15)
   await pool.query(`
     CREATE TABLE IF NOT EXISTS clothing_item (
       id SERIAL PRIMARY KEY,
@@ -55,7 +67,6 @@ async function initDb() {
   `);
   console.log('clothing_item table ready');
 
-  // WashTracker table
   await pool.query(`
     CREATE TABLE IF NOT EXISTS wash_tracker (
       id SERIAL PRIMARY KEY,
@@ -67,7 +78,6 @@ async function initDb() {
     );
   `);
   console.log('wash_tracker table ready');
-
 }
 
 module.exports = { pool, initDb };
