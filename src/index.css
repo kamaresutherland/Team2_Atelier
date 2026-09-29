@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Rock+Salt&display=swap');
+@import "tailwindcss";
+
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+* {
+  font-family: "Manrope", sans-serif;
+  font-weight: 500;
+
+}
+@theme {
+  --color-primary: #5044e5;
+}
+
+.black-background {
+  background-color: black;
+  color: white;
+  min-height: 100vh;
+}
+
+.heading {
+ font-family: "Rock Salt", cursive;
+  font-weight: 400;
+}
