@@ -30,8 +30,8 @@ import menu_icon_dark from './menu_icon_dark.svg'
 import sun_icon from './sun_icon.svg'
 import moon_icon from './moon_icon.svg'
 import atelier from './AtelierLogo2.svg'
-import wardrobe from './wardrobe.svg'
-
+import wardrobe_dark from './wardrobe_dark.svg'
+import wardrobe_light from './wardrobe_light.svg'
 
 export const company_logos = [
   microsoft_logo,
@@ -44,7 +44,8 @@ export const company_logos = [
 
 const assets = {
   logo,
-  wardrobe,
+  wardrobe_dark,
+  wardrobe_light,
   atelier,
   arrow_icon,
   group_profile,

@@ -1,9 +1,9 @@
 import React, { useState } from 'react' // <-- FIXED: Added { useState } here
-import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import './index.css'
+import Navbar from '../components/Navbar'
+import Hero from '../components/Hero'
+import '../index.css'
 
-const App = () => {
+const Home = () => {
   const [theme, setTheme] = useState(localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light') /* uses the theme that was used from toggle button, if none sets it to light mode */
   
   return (
@@ -15,4 +15,4 @@ const App = () => {
   )
 }
 
-export default App
+export default Home

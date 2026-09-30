@@ -1,7 +1,9 @@
 import React from 'react'
 import assets from '../assets/assets'
+import ThemeToggle from "./ThemeToggle"
 
-const Hero = () => {
+
+const Hero = ({theme,setTheme}) => {
   return (
     <div id='hero' className='flex flex-col items-center gap-6 py-20 px-4 sm:px-12 lg:px-24 xl:px-40 text-center w-full overflow-hidden text-gray-700 dark:text-white'>
       
@@ -14,8 +16,14 @@ const Hero = () => {
 
     <p className='text-sm sm:text-lg font-medium text-gray-500 dark:text-white/75 max-w-4/5 sm:max-w-lg pb-3'> Create and planning outfits right from your fingerprints!</p>
 
+   
     <div className ='relative'>
-        <img src={assets.wardrobe} alt ="" className='w-full max-w-6xl'/>
+
+      {/* something with the Theme toggle is throwing it off */}
+
+      {/* <img src={theme === 'dark' ? assets.wardrobe_light : assets.wardrobe_dark} alt="" />*/}
+      <img src={assets.wardrobe_dark} alt ="" className='w-full max-w-6xl'/>
+
     </div>
 
     </div>
