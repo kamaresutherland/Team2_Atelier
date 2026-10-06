@@ -1,14 +1,25 @@
-import React from 'react'
-import '../index.css'
+import React, {useState} from 'react'
 import {Link} from "react-router-dom"
+import { NavBar, NonNavBar } from '../components/Navbar';
+import '../index.css'
 
 function Wardrobe() {
-  return (
-    <div>
-      <h1 className='heading text-center text-6xl'>Wardrobe</h1>
-      <Link to ="/">Home</Link> 
-    </div>
-  )
-}
+  const [theme, setTheme] = useState(localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light') /* uses the theme that was used from toggle button, if none sets it to light mode */
 
-export default Wardrobe
+    return (
+       <div className='dark:bg-black min-h-screen relative'> {/* main container */}
+        {/* pt-2 allows the "STYLIST" to be moved down without leaving a gap */}
+        <div className='flex justify-center items-center px-4 sm:px-12 lg:px-24 xl:px-40 py-4 sticky top-0 z-20 backdrop-blur-xl font-medium bg-white/50 dark:bg-gray-900/70'>
+        <h1 className='heading text-center position-fixed pt-5 text-6xl dark:text-white' >Wardrobe</h1>
+        </div>
+       {/* <NavLink to ="/" className={({isActive}) => {return isActive? 'text-primary-700' : '' }}>Home</NavLink> */} 
+        <div>
+          <NavBar theme={theme} setTheme={setTheme}/>
+        </div>
+
+      </div> /* end of main container */
+    )
+  }
+  
+  export {Wardrobe};
+  

@@ -1,5 +1,5 @@
 import React, { useState } from 'react' // <-- FIXED: Added { useState } here
-import Navbar from '../components/Navbar'
+import {NonNavBar,  NavBar} from '../components/Navbar'
 import Hero from '../components/Hero'
 import '../index.css'
 
@@ -8,7 +8,8 @@ const Home = () => {
   
   return (
       <div className='dark:bg-black relative'>
-        <Navbar theme={theme} setTheme={setTheme}/>
+        <NonNavBar theme={theme} setTheme={setTheme}/>
+        <NavBar theme={theme} setTheme={setTheme}/>
         <Hero />
       </div>
 

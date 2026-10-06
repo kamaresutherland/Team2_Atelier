@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom/client'; // 👈 Fixed: Removed curly braces
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './pages/HomePage';
 import './index.css';
-import Wardrobe from './pages/Wardrobe';
-import Stylist from './pages/Stylist';
-import Settings from './pages/Settings';
+import {Wardrobe} from './pages/Wardrobe';
+import {Stylist} from './pages/Stylist';
+import {Settings} from './pages/Settings';
 import NotFound from './pages/NotFound';
 
 
