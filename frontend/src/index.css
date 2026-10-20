@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Rock+Salt&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Carter+One&family=Erica+One&display=swap');
 @import "tailwindcss";
 
 
@@ -23,3 +24,21 @@
  font-family: "Rock Salt", cursive;
  font-weight: 400;
 }
+
+.test {
+   font-family: "Erica One", sans-serif;
+}
+
+.circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  
+}
+
+

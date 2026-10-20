@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {Link} from "react-router-dom"
 import { NavBar, NonNavBar } from '../components/Navbar';
 import '../index.css'
+import { ClothingItemForm } from '../../../clothing/ClothingItemForm';
 
 function Wardrobe() {
   const [theme, setTheme] = useState(localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light') /* uses the theme that was used from toggle button, if none sets it to light mode */
@@ -16,7 +17,11 @@ function Wardrobe() {
         <div>
           <NavBar theme={theme} setTheme={setTheme}/>
         </div>
-
+        
+        <p className='test text-center position-fixed pt-5 text-6xl dark:text-white'>Test</p>
+        <div className='dark:text-white justifyContent: flex-start'>
+          <ClothingItemForm/> {/* this calls the file that contains the form to fill out new clothes */}
+        </div>
       </div> /* end of main container */
     )
   }

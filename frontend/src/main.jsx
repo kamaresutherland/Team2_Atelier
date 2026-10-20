@@ -6,6 +6,7 @@ import './index.css';
 import {Wardrobe} from './pages/Wardrobe';
 import {Stylist} from './pages/Stylist';
 import {Settings} from './pages/Settings';
+import {ClothingItemForm} from '../../clothing/ClothingItemForm';
 import NotFound from './pages/NotFound';
 
 
