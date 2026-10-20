@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
@@ -32,6 +33,23 @@ export default function ClosetScreen({ navigation }) {
       console.error('Failed to load closet:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const markAsWorn = async (itemId) => {
+    try {
+      const token = await AsyncStorage.getItem('authToken');
+      const response = await fetch(`${API_URL}/api/clothing-items/${itemId}/worn`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.ok) {
+        fetchItems();
+      } else {
+        Alert.alert('Error', 'Could not mark item as worn. Please try again.');
+      }
+    } catch (err) {
+      console.error('Failed to mark as worn:', err);
     }
   };
 
@@ -66,14 +84,20 @@ export default function ClosetScreen({ navigation }) {
       numColumns={2}
       contentContainerStyle={styles.grid}
       renderItem={({ item }) => (
-        <TouchableOpacity style={styles.card}>
+        <View style={styles.card}>
           <Image source={{ uri: item.image_url }} style={styles.image} />
           <Text style={styles.itemName} numberOfLines={1}>{item.item_name}</Text>
           {item.description ? (
             <Text style={styles.description} numberOfLines={2}>{item.description}</Text>
           ) : null}
           <Text style={styles.status}>{item.status}</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.wornButton}
+            onPress={() => markAsWorn(item.id)}
+          >
+            <Text style={styles.wornButtonText}>Mark as Worn</Text>
+          </TouchableOpacity>
+        </View>
       )}
     />
   );
@@ -94,4 +118,16 @@ const styles = StyleSheet.create({
   itemName: { fontWeight: '600', fontSize: 14 },
   description: { fontSize: 12, color: '#666', marginTop: 2 },
   status: { fontSize: 11, color: '#4A3728', marginTop: 4, textTransform: 'capitalize' },
+  wornButton: {
+    marginTop: 6,
+    backgroundColor: '#4A3728',
+    borderRadius: 6,
+    padding: 6,
+    alignItems: 'center',
+  },
+  wornButtonText: {
+    color: '#fff',
+    fontSize: 11,
+    fontWeight: '600',
+  },
 });
