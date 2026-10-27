@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
-    "expo": "^57.0.30",
+    "expo": "^58.0.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router": "^8.4.0",
