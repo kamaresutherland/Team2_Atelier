@@ -9,6 +9,7 @@ app.use(express.json({ limit: '10mb' })); // raised limit in case base64 images 
 
 app.use('/auth', authRouter);
 app.use('/items', itemsRouter);
+app.use('/items', require('./wearStatus'));
 
 app.get('/', (req, res) => res.send('Atelier API is running'));
 
