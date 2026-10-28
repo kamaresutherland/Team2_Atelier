@@ -10,15 +10,18 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+
 // Point this at your backend (use your machine's IP when testing on a physical device)
-const API_URL = 'http://10.1.148.167:3000';
+//const API_URL = 'http://10.1.148.167:3000';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
+  
+  /*const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert('Missing info', 'Please enter both email and password.');
       return;
@@ -43,12 +46,21 @@ export default function LoginScreen({ navigation }) {
       await AsyncStorage.setItem('authToken', data.token);
       await AsyncStorage.setItem('user', JSON.stringify(data.user));
 
-      navigation.replace('Closet');
+      navigation.replace('Home');
     } catch (err) {
       Alert.alert('Network error', 'Could not reach the server. Is it running?');
     } finally {
       setLoading(false);
     }
+  }; */
+
+    const handleLogin = () => {
+    if (!email || !password) {
+      Alert.alert('Missing info', 'Please enter both email and password.');
+      return;
+    }
+
+    navigation.replace('Home');
   };
 
   return (

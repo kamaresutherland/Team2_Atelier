@@ -23,3 +23,12 @@ If you never used vite before, in order to run the UI you have to run npm instal
 ## Running UI
 
 Enter the frontend directory and then call "npm run dev" in the terminal 
+
+## Running mobile-app 
+
+Install in order if haven't already
+1. npm install
+2. npm expo install
+3. npx expo install expo-router react-native-safe-area-context react-native-screens
+
+command to start expo --> $env:EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK=1; npx expo start
