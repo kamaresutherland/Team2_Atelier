@@ -52,9 +52,8 @@ export default function ClosetScreen({ navigation }) {
       console.error('Failed to mark as worn:', err);
     }
   };
-
-  // Refresh the closet every time this screen comes into focus,
-  // so a newly added item shows up immediately.
+// Refresh the closet every time this screen comes into focus,
+// so a newly added item shows up immediately.
   useFocusEffect(
     useCallback(() => {
       fetchItems();
@@ -90,7 +89,10 @@ export default function ClosetScreen({ navigation }) {
           {item.description ? (
             <Text style={styles.description} numberOfLines={2}>{item.description}</Text>
           ) : null}
-          <Text style={styles.status}>{item.status}</Text>
+          <View style={[styles.badge, styles[`badge_${item.status}`] || styles.badge_clean]}>
+            <Text style={styles.badgeText}>{item.status}</Text>
+          </View>
+          <Text style={styles.wearCount}>Worn {item.wear_count} time{item.wear_count !== 1 ? 's' : ''}</Text>
           <TouchableOpacity
             style={styles.wornButton}
             onPress={() => markAsWorn(item.id)}
@@ -117,7 +119,18 @@ const styles = StyleSheet.create({
   image: { width: '100%', height: 140, borderRadius: 8, marginBottom: 6 },
   itemName: { fontWeight: '600', fontSize: 14 },
   description: { fontSize: 12, color: '#666', marginTop: 2 },
-  status: { fontSize: 11, color: '#4A3728', marginTop: 4, textTransform: 'capitalize' },
+  badge: {
+    marginTop: 4,
+    paddingVertical: 3,
+    paddingHorizontal: 8,
+    borderRadius: 99,
+    alignSelf: 'flex-start',
+  },
+  badge_clean: { backgroundColor: '#d4edda' },
+  badge_worn: { backgroundColor: '#fff3cd' },
+  badge_dirty: { backgroundColor: '#f8d7da' },
+  badgeText: { fontSize: 11, fontWeight: '600', textTransform: 'capitalize' },
+  wearCount: { fontSize: 11, color: '#888', marginTop: 3 },
   wornButton: {
     marginTop: 6,
     backgroundColor: '#4A3728',
