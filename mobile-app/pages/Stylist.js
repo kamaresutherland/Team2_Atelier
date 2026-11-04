@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     fontSize: 48,
     textAlign: 'center',
     color: '#000',
-    // fontFamily: 'Bungee_400Regular', // use whichever font your "heading" class had
+    //fontFamily: 'ChangaOne_400Regular', // use whichever font your "heading" class had
   },
   textDark: {
     color: '#fff',

@@ -7,15 +7,19 @@ import { Bungee_400Regular } from '@expo-google-fonts/bungee';
 import { CarterOne_400Regular } from '@expo-google-fonts/carter-one';
 import { EricaOne_400Regular } from '@expo-google-fonts/erica-one';
 import { ChangaOne_400Regular } from '@expo-google-fonts/changa-one';
+import { ArchivoBlack_400Regular }  from '@expo-google-fonts/archivo-black';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import LoginScreen from './LoginScreen';
+import {LandingScreen} from './screens/LandingScreen'
+import LoginScreen from './screens/LoginScreen';
 import {Home} from './pages/Home';
+import {Wardrobe} from './pages/Wardrobe';
 import {Stylist} from './pages/Stylist';
-import ClosetScreen from './ClosetScreen';
-import AddItemScreen from './AddItemScreen';
+import {Settings} from './pages/Settings'
+import ClosetScreen from './screens/ClosetScreen';
+import AddItemScreen from './screens/AddItemScreen';
 
 
 
@@ -31,13 +35,19 @@ export default function App() {
     CarterOne_400Regular,
     EricaOne_400Regular,
     ChangaOne_400Regular,
+    ArchivoBlack_400Regular,
   });
 
   if (!fontsLoaded) return null; // or a loading spinner
 
   return (
     <NavigationContainer> {/* acts as the routing for the website/app */}
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="Landing">
+         <Stack.Screen
+          name="Landing"
+          component={LandingScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Login"
           component={LoginScreen}
@@ -49,8 +59,18 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="Wardrobe"
+          component={Wardrobe}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name="Stylist"
           component={Stylist}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Settings"
+          component={Settings}
           options={{ headerShown: false }}
         />
         <Stack.Screen

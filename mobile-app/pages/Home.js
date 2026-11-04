@@ -34,9 +34,9 @@ const Home = () => {
   return (
     <View style={[styles.container, theme === 'dark' && styles.containerDark]}>
       <ScrollView>
-        <NonNavBar theme={theme} setTheme={setTheme} />
-        <NavBar theme={theme} setTheme={setTheme} />
-        <Hero theme={theme} />
+  
+       <Text>Home</Text>
+       {/* <Hero theme={theme} /> */}
       </ScrollView>
     </View>
   );

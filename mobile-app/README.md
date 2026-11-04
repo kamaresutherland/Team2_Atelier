@@ -33,6 +33,16 @@ When you're ready, run:
 npm run reset-project
 ```
 
+
+## Running mobile-app 
+
+Install in order if haven't already
+1. npm install
+2. npm expo install
+3. npx expo install expo-router react-native-safe-area-context react-native-screens
+
+command to start expo --> $env:EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK=1; npx expo start
+
 This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
 ### Other setup steps

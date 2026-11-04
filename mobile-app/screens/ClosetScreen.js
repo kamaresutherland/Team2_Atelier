@@ -161,6 +161,7 @@ export default function ClosetScreen({ navigation }) {
   );
 }
 
+
 const styles = StyleSheet.create({
   centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   emptyText: { color: '#888', fontSize: 16 },
