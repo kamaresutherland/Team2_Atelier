@@ -27,9 +27,9 @@ const Hero = ({ theme }) => {
 
       <View style={styles.imageWrapper}>
         <Image source={isDark ? wardrobeLight : wardrobeLight} style={styles.image} resizeMode="contain" />
-      </View>
+      
 
-      <Text style={[styles.topic, isDark && styles.textDark, isDark ? styles.glowDark : styles.glow]}>
+      {/* <Text style={[styles.topic, isDark && styles.textDark, isDark ? styles.glowDark : styles.glow]}>
        About
       </Text>
 
@@ -37,9 +37,9 @@ const Hero = ({ theme }) => {
 
       <Text style={[styles.topic, isDark && styles.textDark, isDark ? styles.glowDark : styles.glow]}>
        Features
-      </Text>
+      </Text> */}
 
-  
+      </View>
 
     </View>
 
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
 
   image: {
     width: '100%',
-    height:'45%',
+    height:'60%',
     aspectRatio: 2, // adjust to match your image's width/height
     alignSelf: 'center',
   },

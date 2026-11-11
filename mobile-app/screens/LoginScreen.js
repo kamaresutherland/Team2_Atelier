@@ -60,7 +60,7 @@ export default function LoginScreen({ navigation }) {
       return;
     }
 
-    navigation.replace('Home');
+    navigation.replace('Blank');
   };
 
   return (

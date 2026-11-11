@@ -133,107 +133,9 @@ const NavBar = ({ theme, setTheme }) => {
   );
 };
 
-const LandingBar = ({ theme, setTheme }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const navigation = useNavigation();
-  const isDark = theme === 'dark';
-
-  const goTo = (screen) => {
-    setSidebarOpen(false);
-    navigation.navigate(screen);
-  };
-
-  const [isSelected, setIsSelected] = useState(false);
-
-  return (
-    <>
-
-      {/* Navigation */}
- 
-      {/* <Pressable
-      onPress={() => setIsSelected(!isSelected)} // Toggle selection state on click
-      style={({ hovered }) => [
-        styles.tab,
-        hovered && styles.tabHovered,
-        isSelected && styles.tabSelected
-      ]}
-      >
-      <Text style={[styles.text, isSelected ]}> && styles.textSelected*
-        Tab Item
-      </Text>
-    </Pressable> */}
-      
-       
-
-      {/* Right-side controls: theme toggle + menu button */}
-      <View style={[styles.bar, styles.controlsBar, isDark ? styles.barDark : styles.barLight]}>
-
-         <View style={[styles.landingBar, isDark ? styles.barDark : styles.barLight]}>
-
-      <TouchableOpacity onPress={() => navigation.navigate('Landing')}>
-          <Text style={[styles.page, isDark && styles.textDark]}>About</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate('Landing')}>
-          <Text style={[styles.page, isDark && styles.textDark]}>Features</Text>
-        </TouchableOpacity>
-      
-      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <Text style={[styles.page, isDark && styles.textDark]}>Log In</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate('Landing')}>
-          <Text style={[styles.page, isDark && styles.textDark]}>Sign Up</Text>
-        </TouchableOpacity>
-      </View>
-
-          <ThemeToggle theme={theme} setTheme={setTheme} />
 
 
-        <TouchableOpacity onPress={() => setSidebarOpen(true)} style={styles.iconButton}>
-          <Text style={[styles.icon, isDark && styles.textDark]}>☰</Text>
-        </TouchableOpacity>
-          </View>
-     
-
-      {/* Sidebar (replaces the max-sm:fixed menu) */}
-      <Modal
-        visible={sidebarOpen}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setSidebarOpen(false)}
-      >
-        <View style={styles.overlay}>
-          {/* Tapping the dimmed area closes the menu */}
-          <Pressable style={styles.backdrop} onPress={() => setSidebarOpen(false)} />
-
-          <View style={[styles.sidebar, isDark ? styles.sidebarDark : styles.sidebarLight]}>
-            <TouchableOpacity
-              onPress={() => setSidebarOpen(false)}
-              style={styles.closeButton}
-            >
-              <Text style={[styles.icon, isDark && styles.textDark]}>✕</Text>
-            </TouchableOpacity>
-
-            {LINKS.map((link) => (
-              <TouchableOpacity
-                key={link.screen}
-                onPress={() => goTo(link.screen)}
-                style={styles.link}
-              >
-                <Text style={[styles.linkText, isDark && styles.textDark]}>
-                  {link.label}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-      </Modal>
-    </>
-  );
-};
-
-export { NonNavBar, NavBar, LandingBar };
+export { NonNavBar, NavBar};
 
 const styles = StyleSheet.create({
   tab: {
@@ -277,29 +179,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 0,
     flexDirection: 'row', // needed since View automatically stacks the page links in a column
-    gap: 12,
-   // puts it in the middle 
-  },
-  landingBar: {
-    alignItems: 'center',
-    paddingVertical: 20,
-    flexDirection: 'row', // needed since View automatically stacks the page links in a column
-    gap: 12,
-    justifyContent: 'center',
-    position:'absolute', left:'40%', right:'50%',
+    gap: 102,
    // puts it in the middle 
   },
   bar: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingVertical: 0,
+    paddingVertical: 10,
+    justifyContent: 'center',
   },
   barLight: { backgroundColor: 'rgba(255,255,255,0.85)' }, // changes background of container
   barDark: { backgroundColor: 'rgba(17,24,39,0.9)' }, // changes background of container
   controlsBar: { justifyContent: 'flex-end', gap: 12 }, // pushes all the way to the right 
 
-  logo: { fontSize: 40, fontWeight: '600', color: '#000', fontFamily: 'RockSalt_400Regular'},
+  logo: { fontSize: 60, fontWeight: '200', color: '#000', fontFamily: 'RockSalt_400Regular'},
   textDark: { color: '#fff' },
 
   iconButton: { padding: 4 },

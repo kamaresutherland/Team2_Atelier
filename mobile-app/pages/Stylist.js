@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavBar } from '../components/Navbar';
+//import { NavBar } from '../components/Navbar';
 
 const Stylist = () => {
   const [theme, setTheme] = useState('light');
@@ -38,16 +38,15 @@ const Stylist = () => {
         <Text style={[styles.heading, isDark && styles.textDark]}>Stylist</Text>
       </View>
 
-      <NavBar theme={theme} setTheme={setTheme} />
+      {/*<NavBar theme={theme} setTheme={setTheme} />*/}
 
       <ScrollView contentContainerStyle={styles.content}>
-        {/* Stylist page content goes here */}
       </ScrollView>
     </View>
   );
 };
 
-export  {Stylist};
+export {Stylist};
 
 const styles = StyleSheet.create({
   container: {
@@ -55,26 +54,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   containerDark: {
-    backgroundColor: '#000',
+    backgroundColor: '#091217',
   },
   titleBar: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingVertical: 40,
   },
   titleBarLight: { backgroundColor: 'rgba(255,255,255,0.85)' },
-  titleBarDark: { backgroundColor: 'rgba(17,24,39,0.9)' },
-  heading: {
-    fontSize: 48,
-    textAlign: 'center',
-    color: '#000',
-    //fontFamily: 'ChangaOne_400Regular', // use whichever font your "heading" class had
-  },
-  textDark: {
-    color: '#fff',
-  },
+  titleBarDark: { backgroundColor: '#091217' },
   content: {
     padding: 16,
+  },
+  heading:{
+    color:'#000',
+    textAlign: 'center',
+    fontSize:45,
+    justifyContent: "center",
+    fontFamily: 'Manrope_700Bold',
+  },
+  textDark: {
+    color:'#fff',
   },
 });

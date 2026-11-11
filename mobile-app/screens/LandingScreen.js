@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NonNavBar, LandingBar} from '../components/Navbar';
+import { NonNavBar} from '../components/Navbar';
+import { LandingBar} from '../components/LandingBar';
 import Hero from '../components/Hero';
 
 const LandingScreen = () => {

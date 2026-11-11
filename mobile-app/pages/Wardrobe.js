@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavBar } from '../components/Navbar';
-import {ClothingItemForm} from '../components/ClothingForm'; // must be converted to React Native first
+import {ClothingItemForm} from '../components/ClothingForm'
+//import { NavBar } from '../components/Navbar';
 
 const Wardrobe = () => {
   const [theme, setTheme] = useState('light');
@@ -39,14 +39,11 @@ const Wardrobe = () => {
         <Text style={[styles.heading, isDark && styles.textDark]}>Wardrobe</Text>
       </View>
 
-      <NavBar theme={theme} setTheme={setTheme} />
-
+      {/*<NavBar theme={theme} setTheme={setTheme} />*/}
+      
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={[styles.test, isDark && styles.textDark]}>Test</Text>
-
-        <View style={styles.formArea}>
-          <ClothingItemForm /> {/*this holds the form to fill out new clothes */}
-        </View>
+       {/* <Text style={[styles.text, isDark ? styles.textDark : styles.text]}>Add Item</Text> */}
+        <ClothingItemForm/>
       </ScrollView>
     </View>
   );
@@ -60,35 +57,30 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   containerDark: {
-    backgroundColor: '#000',
+    backgroundColor: '#091217',
   },
   titleBar: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingVertical: 40,
   },
   titleBarLight: { backgroundColor: 'rgba(255,255,255,0.85)' },
-  titleBarDark: { backgroundColor: 'rgba(17,24,39,0.9)' },
-  heading: {
-    fontSize: 48,
-    textAlign: 'center',
-    color: '#000',
-    // fontFamily: 'Bungee_400Regular', // whichever font your "heading" class used
-  },
-  test: {
-    fontSize: 48,
-    textAlign: 'center',
-    paddingTop: 20,
-    color: '#000',
-  },
-  textDark: {
-    color: '#fff',
-  },
+  titleBarDark: { backgroundColor: '#091217' },
   content: {
     padding: 16,
   },
-  formArea: {
-    alignItems: 'flex-start', // the web version's "flex-start" intent
+  heading:{
+    color:'#000',
+    textAlign: 'center',
+    fontSize:45,
+    justifyContent: "center",
+    fontFamily: 'Manrope_700Bold',
+  },
+  text: {
+    color:'#000',
+  },
+  textDark: {
+    color:'#fff',
   },
 });

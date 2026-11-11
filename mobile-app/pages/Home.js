@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NonNavBar, NavBar } from '../components/Navbar';
-import Hero from '../components/Hero';
+//import { NavBar } from '../components/Navbar';
 
 const Home = () => {
   const [theme, setTheme] = useState('light');
   const [themeLoaded, setThemeLoaded] = useState(false);
+  const isDark = theme === 'dark';
 
   // Load the saved theme once on mount (replaces localStorage.getItem)
   useEffect(() => {
@@ -25,18 +25,22 @@ const Home = () => {
 
   // Save the theme whenever it changes (replaces localStorage.setItem)
   useEffect(() => {
-    if (!themeLoaded) return; // avoid overwriting the saved value with the default
+    if (!themeLoaded) return;
     AsyncStorage.setItem('theme', theme).catch((e) =>
       console.log('Could not save theme', e)
     );
   }, [theme, themeLoaded]);
 
   return (
-    <View style={[styles.container, theme === 'dark' && styles.containerDark]}>
-      <ScrollView>
-  
-       <Text>Home</Text>
-       {/* <Hero theme={theme} /> */}
+    <View style={[styles.container, isDark && styles.containerDark]}>
+      {/* Page title bar */}
+      <View style={[styles.titleBar, isDark ? styles.titleBarDark : styles.titleBarLight]}>
+        <Text style={[styles.heading, isDark && styles.textDark]}>Home</Text>
+      </View>
+
+      {/*<NavBar theme={theme} setTheme={setTheme} />*/}
+
+      <ScrollView contentContainerStyle={styles.content}>
       </ScrollView>
     </View>
   );
@@ -50,6 +54,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   containerDark: {
-    backgroundColor: '#000',
+    backgroundColor: '#091217',
+  },
+  titleBar: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 40,
+  },
+  titleBarLight: { backgroundColor: 'rgba(255,255,255,0.85)' },
+  titleBarDark: { backgroundColor: '#091217' },
+  content: {
+    padding: 16,
+  },
+  heading:{
+    color:'#000',
+    textAlign: 'center',
+    fontSize:45,
+    justifyContent: "center",
+    fontFamily: 'Manrope_700Bold',
+  },
+  textDark: {
+    color:'#fff',
   },
 });

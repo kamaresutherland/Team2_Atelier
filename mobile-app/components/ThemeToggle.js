@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   icon: { 
-    width:25, 
-    height: 25,
+    width:10, 
+    height: 10,
+    fontSize:10,
   },
 });

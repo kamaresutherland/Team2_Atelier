@@ -14,6 +14,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import {LandingScreen} from './screens/LandingScreen'
 import LoginScreen from './screens/LoginScreen';
+import {Blank} from './screens/Blank';
 import {Home} from './pages/Home';
 import {Wardrobe} from './pages/Wardrobe';
 import {Stylist} from './pages/Stylist';
@@ -51,6 +52,11 @@ export default function App() {
         <Stack.Screen
           name="Login"
           component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="Blank"
+          component={Blank}
           options={{ headerShown: false }}
         />
          <Stack.Screen
