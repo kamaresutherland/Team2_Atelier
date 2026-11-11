@@ -23,7 +23,24 @@ const STATUS_COLORS = {
 
 export default function ClosetScreen({ navigation }) {
   const [items, setItems] = useState([]);
+  const [washIds, setWashIds] = useState([]); // ids of items that need washing
   const [loading, setLoading] = useState(true);
+
+  // Ask the backend which items need washing. The wash rule lives on the server.
+  const fetchNeedsWashing = async () => {
+    try {
+      const token = await AsyncStorage.getItem('authToken');
+      const response = await fetch(`${API_URL}/items/needs-washing`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setWashIds(data.items.map((item) => item.id));
+      }
+    } catch (err) {
+      console.error('Failed to load items that need washing:', err);
+    }
+  };
 
   const fetchItems = async () => {
     setLoading(true);
@@ -35,6 +52,7 @@ export default function ClosetScreen({ navigation }) {
       const data = await response.json();
       if (response.ok) {
         setItems(data.items);
+        await fetchNeedsWashing();
       }
     } catch (err) {
       console.error('Failed to load closet:', err);
@@ -77,6 +95,8 @@ export default function ClosetScreen({ navigation }) {
       const data = await response.json();
       if (response.ok) {
         applyUpdate(data.item);
+        // The change may add or remove this item from the wash list.
+        fetchNeedsWashing();
       } else {
         Alert.alert('Could not update item', data.error || 'Please try again.');
       }
@@ -113,66 +133,90 @@ export default function ClosetScreen({ navigation }) {
       keyExtractor={(item) => String(item.id)}
       numColumns={2}
       contentContainerStyle={styles.grid}
-      renderItem={({ item }) => (
-        <View style={styles.card}>
-          <Image source={{ uri: item.image_url }} style={styles.image} />
-          <Text style={styles.itemName} numberOfLines={1}>{item.item_name}</Text>
-          {item.description ? (
-            <Text style={styles.description} numberOfLines={2}>{item.description}</Text>
-          ) : null}
-
-          <View style={styles.statusRow}>
-            <View
-              style={[
-                styles.badge,
-                { backgroundColor: STATUS_COLORS[item.status] || '#888' },
-              ]}
-            >
-              <Text style={styles.badgeText}>{item.status}</Text>
-            </View>
-            {item.wear_count != null ? (
-              <Text style={styles.wearCount}>Worn {item.wear_count}x</Text>
+      ListHeaderComponent={
+        washIds.length > 0 ? (
+          <View style={styles.banner}>
+            <Text style={styles.bannerText}>
+              {washIds.length} {washIds.length === 1 ? 'item needs' : 'items need'} washing
+            </Text>
+          </View>
+        ) : null
+      }
+      renderItem={({ item }) => {
+        const needsWash = washIds.includes(item.id);
+        return (
+          <View style={[styles.card, needsWash && styles.cardNeedsWash]}>
+            <Image source={{ uri: item.image_url }} style={styles.image} />
+            <Text style={styles.itemName} numberOfLines={1}>{item.item_name}</Text>
+            {item.description ? (
+              <Text style={styles.description} numberOfLines={2}>{item.description}</Text>
             ) : null}
-          </View>
 
-          <View style={styles.buttonRow}>
-            <TouchableOpacity
-              style={styles.actionButton}
-              onPress={() => changeStatus(item.id, 'worn')}
-            >
-              <Text style={styles.actionText}>Worn</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.actionButton}
-              onPress={() => changeStatus(item.id, 'dirty')}
-            >
-              <Text style={styles.actionText}>Dirty</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.actionButton}
-              onPress={() => washItem(item.id)}
-            >
-              <Text style={styles.actionText}>Washed</Text>
-            </TouchableOpacity>
+            <View style={styles.statusRow}>
+              <View
+                style={[
+                  styles.badge,
+                  { backgroundColor: STATUS_COLORS[item.status] || '#888' },
+                ]}
+              >
+                <Text style={styles.badgeText}>{item.status}</Text>
+              </View>
+              {item.wear_count != null ? (
+                <Text style={styles.wearCount}>Worn {item.wear_count}x</Text>
+              ) : null}
+            </View>
+
+            {needsWash ? <Text style={styles.washLabel}>Needs washing</Text> : null}
+
+            <View style={styles.buttonRow}>
+              <TouchableOpacity
+                style={styles.actionButton}
+                onPress={() => changeStatus(item.id, 'worn')}
+              >
+                <Text style={styles.actionText}>Worn</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.actionButton}
+                onPress={() => changeStatus(item.id, 'dirty')}
+              >
+                <Text style={styles.actionText}>Dirty</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.actionButton}
+                onPress={() => washItem(item.id)}
+              >
+                <Text style={styles.actionText}>Washed</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      )}
+        );
+      }}
     />
   );
 }
-
 
 const styles = StyleSheet.create({
   centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   emptyText: { color: '#888', fontSize: 16 },
   grid: { padding: 10 },
+  banner: {
+    backgroundColor: '#FDECEA',
+    borderRadius: 8,
+    padding: 10,
+    marginHorizontal: 6,
+    marginBottom: 6,
+  },
+  bannerText: { color: '#C62828', fontWeight: '600', fontSize: 14 },
   card: {
     flex: 1,
     margin: 6,
     backgroundColor: '#f7f7f7',
     borderRadius: 10,
     padding: 8,
+    borderWidth: 2,
+    borderColor: 'transparent',
   },
+  cardNeedsWash: { borderColor: '#C62828' },
   image: { width: '100%', height: 140, borderRadius: 8, marginBottom: 6 },
   itemName: { fontWeight: '600', fontSize: 14 },
   description: { fontSize: 12, color: '#666', marginTop: 2 },
@@ -190,6 +234,7 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
   },
   wearCount: { fontSize: 11, color: '#666' },
+  washLabel: { color: '#C62828', fontSize: 11, fontWeight: '600', marginTop: 4 },
   buttonRow: { flexDirection: 'row', marginTop: 8, gap: 4 },
   actionButton: {
     flex: 1,
