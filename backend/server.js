@@ -8,6 +8,7 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' })); // raised limit in case base64 images are sent
 
 app.use('/auth', authRouter);
+app.use('/items', require('./washNeeded'));
 app.use('/items', itemsRouter);
 app.use('/items', require('./wearStatus'));
 
