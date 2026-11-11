@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Alert,
+  ScrollView,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
@@ -25,6 +26,7 @@ export default function ClosetScreen({ navigation }) {
   const [items, setItems] = useState([]);
   const [washIds, setWashIds] = useState([]); // ids of items that need washing
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState('All'); // active category filter
 
   // Ask the backend which items need washing. The wash rule lives on the server.
   const fetchNeedsWashing = async () => {
@@ -127,20 +129,54 @@ export default function ClosetScreen({ navigation }) {
     );
   }
 
+  // Build the filter buttons from the categories that are actually in this closet.
+  // Items saved without a category get grouped under "Other".
+  const categories = ['All', ...new Set(items.map((item) => item.category || 'Other'))];
+
+  // If the selected category no longer exists, fall back to showing everything.
+  const activeCategory = categories.includes(selectedCategory) ? selectedCategory : 'All';
+
+  const visibleItems =
+    activeCategory === 'All'
+      ? items
+      : items.filter((item) => (item.category || 'Other') === activeCategory);
+
   return (
     <FlatList
-      data={items}
+      data={visibleItems}
       keyExtractor={(item) => String(item.id)}
       numColumns={2}
       contentContainerStyle={styles.grid}
       ListHeaderComponent={
-        washIds.length > 0 ? (
-          <View style={styles.banner}>
-            <Text style={styles.bannerText}>
-              {washIds.length} {washIds.length === 1 ? 'item needs' : 'items need'} washing
-            </Text>
-          </View>
-        ) : null
+        <View>
+          {washIds.length > 0 ? (
+            <View style={styles.banner}>
+              <Text style={styles.bannerText}>
+                {washIds.length} {washIds.length === 1 ? 'item needs' : 'items need'} washing
+              </Text>
+            </View>
+          ) : null}
+
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.filterRow}
+          >
+            {categories.map((category) => (
+              <TouchableOpacity
+                key={category}
+                style={[styles.filterChip, activeCategory === category && styles.filterChipActive]}
+                onPress={() => setSelectedCategory(category)}
+              >
+                <Text
+                  style={[styles.filterText, activeCategory === category && styles.filterTextActive]}
+                >
+                  {category}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
       }
       renderItem={({ item }) => {
         const needsWash = washIds.includes(item.id);
@@ -207,8 +243,21 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   bannerText: { color: '#C62828', fontWeight: '600', fontSize: 14 },
+  filterRow: { paddingHorizontal: 6, paddingBottom: 8 },
+  filterChip: {
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    borderRadius: 99,
+    borderWidth: 1,
+    borderColor: '#4A3728',
+    marginRight: 8,
+  },
+  filterChipActive: { backgroundColor: '#4A3728' },
+  filterText: { fontSize: 13, fontWeight: '600', color: '#4A3728' },
+  filterTextActive: { color: '#fff' },
   card: {
     flex: 1,
+    maxWidth: '50%', // keeps a lone card in a filtered row from stretching full width
     margin: 6,
     backgroundColor: '#f7f7f7',
     borderRadius: 10,
