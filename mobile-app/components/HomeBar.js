@@ -1,5 +1,7 @@
 import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
+import React, { useState, useEffect } from 'react';
+//import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {StyleSheet} from 'react-native'
 import {Home} from '../pages/Home';
 import {Wardrobe} from '../pages/Wardrobe';
@@ -22,7 +24,32 @@ const Tab = createBottomTabNavigator();
 
 
 function MyTabs() {
- // const isDark = theme === 'dark';
+  const [theme, setTheme] = useState('light');
+  const [themeLoaded, setThemeLoaded] = useState(false);
+  const isDark = theme === 'dark';
+ // Load the saved theme once on mount (replaces localStorage.getItem)
+   useEffect(() => {
+     const loadTheme = async () => {
+       try {
+         const saved = await AsyncStorage.getItem('theme');
+         if (saved) setTheme(saved);
+       } catch (e) {
+         console.log('Could not load theme', e);
+       } finally {
+         setThemeLoaded(true);
+       }
+     };
+     loadTheme();
+   }, []);
+ 
+   // Save the theme whenever it changes (replaces localStorage.setItem)
+   useEffect(() => {
+     if (!themeLoaded) return;
+     AsyncStorage.setItem('theme', theme).catch((e) =>
+       console.log('Could not save theme', e)
+     );
+   }, [theme, themeLoaded]);
+ 
 
   return (
     <Tab.Navigator

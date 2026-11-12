@@ -14,11 +14,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import {LandingScreen} from './screens/LandingScreen'
 import LoginScreen from './screens/LoginScreen';
-import {Blank} from './screens/Blank';
+import {Blank} from './screens/Navigation';
 import {Home} from './pages/Home';
 import {Wardrobe} from './pages/Wardrobe';
 import {Stylist} from './pages/Stylist';
 import {Settings} from './pages/Settings'
+import SignUpScreen from './screens/SignUpScreen'
 import ClosetScreen from './screens/ClosetScreen';
 import AddItemScreen from './screens/AddItemScreen';
 
@@ -43,10 +44,15 @@ export default function App() {
 
   return (
     <NavigationContainer> {/* acts as the routing for the website/app */}
-      <Stack.Navigator initialRouteName="Landing">
-         <Stack.Screen
-          name="Landing"
+      <Stack.Navigator initialRouteName="Landing"> 
+        <Stack.Screen
+          name="Landing" // input to naviage to new page 
           component={LandingScreen}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="SignUp"
+          component={SignUpScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen

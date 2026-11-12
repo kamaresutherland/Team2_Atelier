@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet,TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ClothingItemForm} from '../components/ClothingForm'
 //import { NavBar } from '../components/Navbar';
+
+import { useNavigation } from '@react-navigation/native'; 
 
 const Wardrobe = () => {
   const [theme, setTheme] = useState('light');
   const [themeLoaded, setThemeLoaded] = useState(false);
   const isDark = theme === 'dark';
+  const navigation = useNavigation();
+
+  
+  const goTo = (screen) => {
+    navigation.navigate(screen);
+  };
 
   // Load the saved theme once on mount (replaces localStorage.getItem)
   useEffect(() => {
@@ -42,8 +50,12 @@ const Wardrobe = () => {
       {/*<NavBar theme={theme} setTheme={setTheme} />*/}
       
       <ScrollView contentContainerStyle={styles.content}>
-       {/* <Text style={[styles.text, isDark ? styles.textDark : styles.text]}>Add Item</Text> */}
-        <ClothingItemForm/>
+
+        <TouchableOpacity onPress={() => navigation.navigate('Closet')}>
+          <Text style={[styles.text, isDark ? styles.textDark : styles.text]}>Access you clothes here!</Text>
+        </TouchableOpacity>
+
+       {/* <ClothingItemForm/> */}
       </ScrollView>
     </View>
   );
@@ -79,6 +91,9 @@ const styles = StyleSheet.create({
   },
   text: {
     color:'#000',
+    fontSize: 30,
+    textAlign:'center',
+    fontFamily: 'Manrope_700Bold',
   },
   textDark: {
     color:'#fff',

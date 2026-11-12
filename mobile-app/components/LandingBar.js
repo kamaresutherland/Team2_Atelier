@@ -15,7 +15,7 @@ const LINKS = [
   { label: 'About', screen: 'Home' },
   { label: 'Features', screen: 'Wardrobe' },
   { label: 'Log In', screen: 'Stylist' },
-  { label: 'Sign Up', screen: 'Settings' },
+  { label: 'Sign Up', screen: 'SignUpScreen' },
 ];
 
 
@@ -35,21 +35,7 @@ const LandingBar = ({ theme, setTheme }) => {
     <>
 
       {/* Navigation */}
- 
-      {/* <Pressable
-      onPress={() => setIsSelected(!isSelected)} // Toggle selection state on click
-      style={({ hovered }) => [
-        styles.tab,
-        hovered && styles.tabHovered,
-        isSelected && styles.tabSelected
-      ]}
-      >
-      <Text style={[styles.text, isSelected ]}> && styles.textSelected*
-        Tab Item
-      </Text>
-    </Pressable> */}
-      
-       
+
 
       {/* Right-side controls: theme toggle + menu button */}
       <View style={[styles.bar, styles.controlsBar, isDark ? styles.barDark : styles.barLight]}>
@@ -68,7 +54,7 @@ const LandingBar = ({ theme, setTheme }) => {
           <Text style={[styles.page, isDark && styles.textDark]}>Log In</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate('Landing')}>
+        <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
           <Text style={[styles.page, isDark && styles.textDark]}>Sign Up</Text>
         </TouchableOpacity>
       </View>
