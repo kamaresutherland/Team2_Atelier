@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ThemeToggle from '../components/ThemeToggle';
 //import { NavBar } from '../components/Navbar';
 
 const Settings = () => {
@@ -35,12 +36,14 @@ const Settings = () => {
     <View style={[styles.container, isDark && styles.containerDark]}>
       {/* Page title bar */}
       <View style={[styles.titleBar, isDark ? styles.titleBarDark : styles.titleBarLight]}>
-        <Text style={[styles.heading, isDark && styles.textDark]}>Settings</Text>
+        <Text style={[styles.heading, isDark ? styles.heading : styles.headingDark]}>Settings</Text>
       </View>
 
       {/*<NavBar theme={theme} setTheme={setTheme} />*/}
 
       <ScrollView contentContainerStyle={styles.content}>
+        <Text style={[styles.text, isDark ? styles.text : styles.textDark]}>Toggle Theme</Text>
+         <ThemeToggle theme={theme} setTheme={setTheme} />
       </ScrollView>
     </View>
   );
@@ -66,15 +69,32 @@ const styles = StyleSheet.create({
   titleBarDark: { backgroundColor: '#091217' },
   content: {
     padding: 16,
+    alignItems:"center",
   },
   heading:{
+    color:'#fff',
+    textAlign: 'center',
+    fontSize:45,
+    justifyContent: "center",
+    fontFamily: 'Manrope_700Bold',
+  },
+  headingDark:{
     color:'#000',
     textAlign: 'center',
     fontSize:45,
     justifyContent: "center",
     fontFamily: 'Manrope_700Bold',
   },
-  textDark: {
+  text: {
     color:'#fff',
+    fontSize: 30,
+    textAlign:'center',
+    fontFamily: 'Manrope_700Bold',
+  },
+  textDark: {
+    color:'#000',
+    fontSize: 30,
+    textAlign:'center',
+    fontFamily: 'Manrope_700Bold',
   },
 });

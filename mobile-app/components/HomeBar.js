@@ -2,7 +2,7 @@ import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React, { useState, useEffect } from 'react';
 //import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {StyleSheet} from 'react-native'
+import {StyleSheet,View} from 'react-native'
 import {Home} from '../pages/Home';
 import {Wardrobe} from '../pages/Wardrobe';
 import {Stylist} from '../pages/Stylist';
@@ -52,27 +52,40 @@ function MyTabs() {
  
 
   return (
-    <Tab.Navigator
-        screenOptions={{
-            tabBarActiveTintColor:"#2563EB",
-            tabBarInactiveTintColor: "#9CA3AF",
-            tabBarStyle: {
-                backgroundColor: "#fff",
-            },
-            tabBarLabelStyle:{
-                fontSize:10,
-                fontFamily: 'Manrope_400Regular',
-                fontWeight: "bold",
-            },
-        }}
-    >
-      
+   <Tab.Navigator
+  screenOptions={{
+    tabBarActiveTintColor: '#2563EB',
+    tabBarInactiveTintColor: '#fff',
+    tabBarStyle: {
+      backgroundColor: '#000',
+      width: 300,
+      height: 50,
+      borderRadius: 25, // Half of height (50) for a clean pill shape
+      paddingHorizontal: 10,
+      alignSelf: 'center', // Centers the 300px tab bar horizontally on screen
+      justifyContent: 'center',
+    },
+    tabBarItemStyle: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 50, // Matches tabBarStyle height so items center vertically
+    },
+    tabBarLabelStyle: { // page text 
+      fontSize: 10,
+      fontFamily: 'Manrope_400Regular',
+      fontWeight: 'bold',
+    },
+  }}
+>
+
       <Tab.Screen name="Home" component={Home} options={{headerShown: false,  tabBarIcon: ({focused}) => <FontAwesome name="home" size={24} color={focused ? "#2563EB" : "#9CA3AF"} />  }}/> 
-      <Tab.Screen name="Wardrobe" component={Wardrobe} options={{headerShown: false,  tabBarIcon: ({focused}) => <MaterialCommunityIcons name="wardrobe" size={24} color={focused ? "#2563EB" : "#9CA3AF"} />  }} />
+      <Tab.Screen name="Wardrobe" component={Wardrobe} options={{headerShown: false,  tabBarIcon: ({focused}) => <MaterialCommunityIcons name="wardrobe" size={24} color={focused ? "#2563EB" : "#fff"} />  }} />
       <Tab.Screen name="Stylist" component={Stylist} options={{headerShown: false, tabBarIcon: ({focused}) => <FontAwesome name="paint-brush" size={24} color={focused ? "#2563EB" : "#9CA3AF"} />  }} />
       <Tab.Screen name="Settings" component={Settings} options={{headerShown: false, tabBarIcon: ({focused}) => <MaterialIcons name="app-settings-alt" size={24} color={focused ? "#2563EB" : "#9CA3AF"} />  } } />
     </Tab.Navigator>
+   
   );
+  
 }
 
 export {MyTabs};
@@ -87,5 +100,8 @@ const styles = StyleSheet.create({
 
   iconButton: { padding: 4 },
   icon: { fontSize: 28, color: '#000' },
+  back: {
+    backgroundColor:"rgba(17,24,39,0.9)",
+  }
 
 });

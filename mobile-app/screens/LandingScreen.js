@@ -10,7 +10,7 @@ const LandingScreen = () => {
   const [themeLoaded, setThemeLoaded] = useState(false);
 
   // Load the saved theme once on mount (replaces localStorage.getItem)
-  useEffect(() => {
+ {/* useEffect(() => {
     const loadTheme = async () => {
       try {
         const saved = await AsyncStorage.getItem('theme');
@@ -30,7 +30,7 @@ const LandingScreen = () => {
     AsyncStorage.setItem('theme', theme).catch((e) =>
       console.log('Could not save theme', e)
     );
-  }, [theme, themeLoaded]);
+  }, [theme, themeLoaded]); */}
 
   return (
     <View style={[styles.container, theme === 'dark' && styles.containerDark]}>

@@ -58,25 +58,26 @@ const LandingBar = ({ theme, setTheme }) => {
           <Text style={[styles.page, isDark && styles.textDark]}>Sign Up</Text>
         </TouchableOpacity>
       </View>
+        
+        {/*
+          <ThemeToggle theme={theme} setTheme={setTheme} /> Theme toggle button 
 
-          <ThemeToggle theme={theme} setTheme={setTheme} />
 
-
-        <TouchableOpacity onPress={() => setSidebarOpen(true)} style={styles.iconButton}>
-        {/* <Text style={[styles.icon, isDark && styles.textDark]}>☰</Text> */}
-        </TouchableOpacity>
+         <TouchableOpacity onPress={() => setSidebarOpen(true)} style={styles.iconButton}>
+         <Text style={[styles.icon, isDark && styles.textDark]}>☰</Text> Icon for sidebar 
+        </TouchableOpacity>*/}
           </View>
      
 
-      {/* Sidebar (replaces the max-sm:fixed menu) */}
-      <Modal
+      {/* Sidebar (replaces the max-sm:fixed menu) 
+     <Modal
         visible={sidebarOpen}
         transparent
         animationType="fade"
         onRequestClose={() => setSidebarOpen(false)}
       >
         <View style={styles.overlay}>
-          {/* Tapping the dimmed area closes the menu */}
+           Tapping the dimmed area closes the menu 
           <Pressable style={styles.backdrop} onPress={() => setSidebarOpen(false)} />
 
           <View style={[styles.sidebar, isDark ? styles.sidebarDark : styles.sidebarLight]}>
@@ -99,9 +100,11 @@ const LandingBar = ({ theme, setTheme }) => {
               </TouchableOpacity>
             ))}
           </View>
-        </View>
-      </Modal>
-    </>
+        </View> 
+       </Modal> 
+       */}
+      
+    </> 
   );
 };
 
