@@ -1,35 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTheme } from '../components/ThemeContext';
 //import { NavBar } from '../components/Navbar';
 
+/**
+ * Home page. Reads the shared theme; the theme can only be changed in Settings.
+ */
 const Home = () => {
-  const [theme, setTheme] = useState('light');
-  const [themeLoaded, setThemeLoaded] = useState(false);
+  const { theme } = useTheme();
   const isDark = theme === 'dark';
-
-  // Load the saved theme once on mount (replaces localStorage.getItem)
-  useEffect(() => {
-    const loadTheme = async () => {
-      try {
-        const saved = await AsyncStorage.getItem('theme');
-        if (saved) setTheme(saved);
-      } catch (e) {
-        console.log('Could not load theme', e);
-      } finally {
-        setThemeLoaded(true);
-      }
-    };
-    loadTheme();
-  }, []);
-
-  // Save the theme whenever it changes (replaces localStorage.setItem)
-  useEffect(() => {
-    if (!themeLoaded) return;
-    AsyncStorage.setItem('theme', theme).catch((e) =>
-      console.log('Could not save theme', e)
-    );
-  }, [theme, themeLoaded]);
 
   return (
     <View style={[styles.container, isDark && styles.containerDark]}>
@@ -38,7 +17,7 @@ const Home = () => {
         <Text style={[styles.heading, isDark && styles.textDark]}>Home</Text>
       </View>
 
-      {/*<NavBar theme={theme} setTheme={setTheme} />*/}
+      {/*<NavBar theme={theme} />*/}
 
       <ScrollView contentContainerStyle={styles.content}>
       </ScrollView>
@@ -67,14 +46,13 @@ const styles = StyleSheet.create({
   content: {
     padding: 16,
   },
-  heading:{
-    color:'#000',
+  heading: {
+    color: '#000',
     textAlign: 'center',
-    fontSize:45,
-    justifyContent: "center",
+    fontSize: 45,
     fontFamily: 'Manrope_700Bold',
   },
   textDark: {
-    color:'#fff',
+    color: '#fff',
   },
 });

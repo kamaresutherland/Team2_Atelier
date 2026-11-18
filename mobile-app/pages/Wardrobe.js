@@ -1,44 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, Text, ScrollView, StyleSheet,TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ClothingItemForm} from '../components/ClothingForm'
+import { useTheme } from '../components/ThemeContext';
 //import { NavBar } from '../components/Navbar';
 
 import { useNavigation } from '@react-navigation/native'; 
 
+
+/**
+ * Home page. Reads the shared theme; the theme can only be changed in Settings.
+ */
 const Wardrobe = () => {
-  const [theme, setTheme] = useState('light');
-  const [themeLoaded, setThemeLoaded] = useState(false);
+  const { theme } = useTheme();
   const isDark = theme === 'dark';
+
   const navigation = useNavigation();
 
   
   const goTo = (screen) => {
     navigation.navigate(screen);
   };
-
-  // Load the saved theme once on mount (replaces localStorage.getItem)
-  useEffect(() => {
-    const loadTheme = async () => {
-      try {
-        const saved = await AsyncStorage.getItem('theme');
-        if (saved) setTheme(saved);
-      } catch (e) {
-        console.log('Could not load theme', e);
-      } finally {
-        setThemeLoaded(true);
-      }
-    };
-    loadTheme();
-  }, []);
-
-  // Save the theme whenever it changes (replaces localStorage.setItem)
-  useEffect(() => {
-    if (!themeLoaded) return;
-    AsyncStorage.setItem('theme', theme).catch((e) =>
-      console.log('Could not save theme', e)
-    );
-  }, [theme, themeLoaded]);
 
   return (
     <View style={[styles.container, isDark && styles.containerDark]}>
@@ -47,15 +27,15 @@ const Wardrobe = () => {
         <Text style={[styles.heading, isDark && styles.textDark]}>Wardrobe</Text>
       </View>
 
-      {/*<NavBar theme={theme} setTheme={setTheme} />*/}
-      
+      {/*<NavBar theme={theme} />*/}
+
       <ScrollView contentContainerStyle={styles.content}>
-
         <TouchableOpacity onPress={() => navigation.navigate('Closet')}>
-          <Text style={[styles.text, isDark ? styles.textDark : styles.text]}>Access you clothes here!</Text>
-        </TouchableOpacity>
-
-       {/* <ClothingItemForm/> */}
+                  <Text style={[styles.textLight, isDark ? styles.textDark : styles.textLight]}>Access you clothes here!</Text>
+                </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('AddItem')}>
+                  <Text style={[styles.textLight, isDark ? styles.textDark : styles.textLight]}>Add clothes here!</Text>
+                </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -82,20 +62,18 @@ const styles = StyleSheet.create({
   content: {
     padding: 16,
   },
-  heading:{
-    color:'#000',
+  heading: {
+    color: '#000',
     textAlign: 'center',
-    fontSize:45,
-    justifyContent: "center",
-    fontFamily: 'Manrope_700Bold',
-  },
-  text: {
-    color:'#000',
-    fontSize: 30,
-    textAlign:'center',
+    fontSize: 45,
     fontFamily: 'Manrope_700Bold',
   },
   textDark: {
-    color:'#fff',
+    color: '#fff',
+    textAlign: 'center',
   },
+  textLight: {
+    color:"#000",
+    textAlign: 'center',
+  }
 });

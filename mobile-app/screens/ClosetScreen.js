@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import { useTheme } from '../components/ThemeContext';
 
 const API_URL = 'http://localhost:3000';
 
@@ -27,6 +28,10 @@ export default function ClosetScreen({ navigation }) {
   const [washIds, setWashIds] = useState([]); // ids of items that need washing
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All'); // active category filter
+
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
 
   // Ask the backend which items need washing. The wash rule lives on the server.
   const fetchNeedsWashing = async () => {
@@ -142,6 +147,7 @@ export default function ClosetScreen({ navigation }) {
       : items.filter((item) => (item.category || 'Other') === activeCategory);
 
   return (
+    <View style={[styles.container, isDark ? styles.containerDark : styles.container]}>
     <FlatList
       data={visibleItems}
       keyExtractor={(item) => String(item.id)}
@@ -228,10 +234,18 @@ export default function ClosetScreen({ navigation }) {
         );
       }}
     />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+   container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  containerDark: {
+    backgroundColor: '#091217',
+  },
   centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   emptyText: { color: '#888', fontSize: 16 },
   grid: { padding: 10 },

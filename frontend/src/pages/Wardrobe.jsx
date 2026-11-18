@@ -20,7 +20,7 @@ function Wardrobe() {
         
         <p className='test text-center position-fixed pt-5 text-6xl dark:text-white'>Test</p>
         <div className='dark:text-white justifyContent: flex-start'>
-          <ClothingItemForm/> {/* this calls the file that contains the form to fill out new clothes */}
+          {/*<ClothingItemForm/>  this calls the file that contains the form to fill out new clothes */}
         </div>
       </div> /* end of main container */
     )

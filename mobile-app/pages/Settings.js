@@ -1,49 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import ThemeToggle from '../components/ThemeToggle';
-//import { NavBar } from '../components/Navbar';
+import React from 'react';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { useTheme } from '../components/ThemeContext';
+import { ThemeToggle } from '../components/ThemeToggle';
+import { useNavigation } from '@react-navigation/native'; 
 
+/**
+ * Settings page. The only page where the theme can be changed.
+ */
 const Settings = () => {
-  const [theme, setTheme] = useState('light');
-  const [themeLoaded, setThemeLoaded] = useState(false);
+  const { theme } = useTheme();
   const isDark = theme === 'dark';
+  
+  const navigation = useNavigation();
+  
+    
+  const goTo = (screen) => {
+      navigation.navigate(screen);
 
-  // Load the saved theme once on mount (replaces localStorage.getItem)
-  useEffect(() => {
-    const loadTheme = async () => {
-      try {
-        const saved = await AsyncStorage.getItem('theme');
-        if (saved) setTheme(saved);
-      } catch (e) {
-        console.log('Could not load theme', e);
-      } finally {
-        setThemeLoaded(true);
-      }
-    };
-    loadTheme();
-  }, []);
-
-  // Save the theme whenever it changes (replaces localStorage.setItem)
-  useEffect(() => {
-    if (!themeLoaded) return;
-    AsyncStorage.setItem('theme', theme).catch((e) =>
-      console.log('Could not save theme', e)
-    );
-  }, [theme, themeLoaded]);
+  };
 
   return (
     <View style={[styles.container, isDark && styles.containerDark]}>
       {/* Page title bar */}
       <View style={[styles.titleBar, isDark ? styles.titleBarDark : styles.titleBarLight]}>
-        <Text style={[styles.heading, isDark ? styles.heading : styles.headingDark]}>Settings</Text>
+        <Text style={[styles.heading, isDark && styles.headingDark]}>Settings</Text>
       </View>
 
-      {/*<NavBar theme={theme} setTheme={setTheme} />*/}
-
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={[styles.text, isDark ? styles.text : styles.textDark]}>Toggle Theme</Text>
-         <ThemeToggle theme={theme} setTheme={setTheme} />
+       {/* <ThemeToggle /> */}
+        <TouchableOpacity onPress={() => navigation.navigate('Preferences')}>
+          <Text style={[styles.text, isDark ? styles.textDark : styles.text]}>Preferences</Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -69,32 +56,24 @@ const styles = StyleSheet.create({
   titleBarDark: { backgroundColor: '#091217' },
   content: {
     padding: 16,
-    alignItems:"center",
+    alignItems: 'center',
   },
-  heading:{
-    color:'#fff',
+  heading: {
+    color: '#000',
     textAlign: 'center',
-    fontSize:45,
-    justifyContent: "center",
+    fontSize: 45,
     fontFamily: 'Manrope_700Bold',
   },
-  headingDark:{
-    color:'#000',
-    textAlign: 'center',
-    fontSize:45,
-    justifyContent: "center",
-    fontFamily: 'Manrope_700Bold',
+  headingDark: {
+    color: '#fff',
   },
   text: {
-    color:'#fff',
+    color: '#000',
     fontSize: 30,
-    textAlign:'center',
+    textAlign: 'center',
     fontFamily: 'Manrope_700Bold',
   },
   textDark: {
-    color:'#000',
-    fontSize: 30,
-    textAlign:'center',
-    fontFamily: 'Manrope_700Bold',
+    color: '#fff',
   },
 });

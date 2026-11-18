@@ -11,6 +11,7 @@ import {
   ScrollView,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTheme } from '../components/ThemeContext';
 
 const API_URL = 'http://localhost:3000';
 
@@ -23,6 +24,9 @@ export default function AddItemScreen({ route, navigation }) {
   const [color, setColor] = useState('');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   const handleSave = async () => {
     if (!itemName) {
@@ -71,7 +75,7 @@ export default function AddItemScreen({ route, navigation }) {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, isDark ? styles.containerDark : styles.container]}>
       <Text style={styles.title}>Add to Closet</Text>
 
       {imageUrl ? (
@@ -121,6 +125,9 @@ export default function AddItemScreen({ route, navigation }) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff', padding: 20 },
+  containerDark: {
+    backgroundColor: '#091217',
+  },
   title: { fontSize: 24, fontWeight: 'bold', marginBottom: 16 },
   preview: { width: '100%', height: 220, borderRadius: 10, marginBottom: 16 },
   placeholder: {

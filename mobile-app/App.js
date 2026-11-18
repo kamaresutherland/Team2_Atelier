@@ -1,4 +1,5 @@
 import React from 'react';
+import { ThemeProvider } from './components/ThemeContext';
 
 import { useFonts } from 'expo-font';
 import { Manrope_400Regular, Manrope_700Bold } from '@expo-google-fonts/manrope';
@@ -19,6 +20,7 @@ import {Home} from './pages/Home';
 import {Wardrobe} from './pages/Wardrobe';
 import {Stylist} from './pages/Stylist';
 import {Settings} from './pages/Settings'
+import {Preferences} from './pages/SubSettings/Preferences'
 import SignUpScreen from './screens/SignUpScreen'
 import ClosetScreen from './screens/ClosetScreen';
 import AddItemScreen from './screens/AddItemScreen';
@@ -43,6 +45,7 @@ export default function App() {
   if (!fontsLoaded) return null; // or a loading spinner
 
   return (
+    <ThemeProvider>
     <NavigationContainer> {/* acts as the routing for the website/app */}
       <Stack.Navigator initialRouteName="Landing"> 
         <Stack.Screen
@@ -86,9 +89,14 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="Preferences"
+          component={Preferences}
+          options={{title: 'Preferences', headerBackTitle: 'Back', }} // headerBack ... is the back button
+        />
+        <Stack.Screen
           name="Closet"
           component={ClosetScreen}
-          options={{ title: 'My Closet' }}
+          options={{ title: 'My Closet', headerBackTitle: 'Back' }} // headerBack ... is the back button
         />
         <Stack.Screen
           name="AddItem"
@@ -97,6 +105,7 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
+    </ThemeProvider>
   );
 }
 

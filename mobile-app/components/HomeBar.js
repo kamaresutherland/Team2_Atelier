@@ -8,6 +8,7 @@ import {Wardrobe} from '../pages/Wardrobe';
 import {Stylist} from '../pages/Stylist';
 import {Settings} from '../pages/Settings'
 //import ThemeToggle from './ThemeToggle';
+import { useTheme } from './ThemeContext';
 
 // importing icons for bar 
 import { Ionicons } from '@react-native-vector-icons/ionicons';
@@ -24,47 +25,14 @@ const Tab = createBottomTabNavigator();
 
 
 function MyTabs() {
-  const [theme, setTheme] = useState('light');
-  const [themeLoaded, setThemeLoaded] = useState(false);
-  const isDark = theme === 'dark';
- // Load the saved theme once on mount (replaces localStorage.getItem)
-   useEffect(() => {
-     const loadTheme = async () => {
-       try {
-         const saved = await AsyncStorage.getItem('theme');
-         if (saved) setTheme(saved);
-       } catch (e) {
-         console.log('Could not load theme', e);
-       } finally {
-         setThemeLoaded(true);
-       }
-     };
-     loadTheme();
-   }, []);
- 
-   // Save the theme whenever it changes (replaces localStorage.setItem)
-   useEffect(() => {
-     if (!themeLoaded) return;
-     AsyncStorage.setItem('theme', theme).catch((e) =>
-       console.log('Could not save theme', e)
-     );
-   }, [theme, themeLoaded]);
- 
+    const { theme } = useTheme();
+    const isDark = theme === 'dark';
 
+  
   return (
    <Tab.Navigator
   screenOptions={{
-    tabBarActiveTintColor: '#2563EB',
-    tabBarInactiveTintColor: '#fff',
-    tabBarStyle: {
-      backgroundColor: '#000',
-      width: 300,
-      height: 50,
-      borderRadius: 25, // Half of height (50) for a clean pill shape
-      paddingHorizontal: 10,
-      alignSelf: 'center', // Centers the 300px tab bar horizontally on screen
-      justifyContent: 'center',
-    },
+    tabBarStyle: isDark ? styles.themeDark : styles.themeLight,
     tabBarItemStyle: {
       justifyContent: 'center',
       alignItems: 'center',
@@ -73,15 +41,15 @@ function MyTabs() {
     tabBarLabelStyle: { // page text 
       fontSize: 10,
       fontFamily: 'Manrope_400Regular',
-      fontWeight: 'bold',
+     // fontWeight: 'bold',
     },
   }}
 >
 
-      <Tab.Screen name="Home" component={Home} options={{headerShown: false,  tabBarIcon: ({focused}) => <FontAwesome name="home" size={24} color={focused ? "#2563EB" : "#9CA3AF"} />  }}/> 
-      <Tab.Screen name="Wardrobe" component={Wardrobe} options={{headerShown: false,  tabBarIcon: ({focused}) => <MaterialCommunityIcons name="wardrobe" size={24} color={focused ? "#2563EB" : "#fff"} />  }} />
-      <Tab.Screen name="Stylist" component={Stylist} options={{headerShown: false, tabBarIcon: ({focused}) => <FontAwesome name="paint-brush" size={24} color={focused ? "#2563EB" : "#9CA3AF"} />  }} />
-      <Tab.Screen name="Settings" component={Settings} options={{headerShown: false, tabBarIcon: ({focused}) => <MaterialIcons name="app-settings-alt" size={24} color={focused ? "#2563EB" : "#9CA3AF"} />  } } />
+      <Tab.Screen name="Home" component={Home} options={{headerShown: false,  tabBarIcon: ({focused}) => <FontAwesome name="home" size={24} color={focused ? styles.tabBarActiveTintColor : styles.tabBarInactiveTintColor} />  }}/> 
+      <Tab.Screen name="Wardrobe" component={Wardrobe} options={{headerShown: false,  tabBarIcon: ({focused}) => <MaterialCommunityIcons name="wardrobe" size={24} color={focused ? styles.tabBarActiveTintColor  : styles.tabBarInactiveTintColor} />  }} />
+      <Tab.Screen name="Stylist" component={Stylist} options={{headerShown: false, tabBarIcon: ({focused}) => <FontAwesome name="paint-brush" size={24} color={focused ? styles.tabBarActiveTintColor  : styles.tabBarInactiveTintColor} />  }} />
+      <Tab.Screen name="Settings" component={Settings} options={{headerShown: false, tabBarIcon: ({focused}) => <MaterialIcons name="app-settings-alt" size={24} color={focused ? styles.tabBarActiveTintColor : styles.tabBarInactiveTintColor} />  } } />
     </Tab.Navigator>
    
   );
@@ -92,16 +60,33 @@ export {MyTabs};
 
 
 const styles = StyleSheet.create({
-  barLight: { backgroundColor: 'rgba(255,255,255,0.85)' }, // changes background of container
-  barDark: { backgroundColor: 'rgba(17,24,39,0.9)' }, // changes background of container
- 
-  logo: {  alignItems: 'center',fontSize: 40, fontWeight: '600', color: '#000', fontFamily: 'RockSalt_400Regular'},
-  textDark: { color: '#fff' },
 
-  iconButton: { padding: 4 },
-  icon: { fontSize: 28, color: '#000' },
-  back: {
-    backgroundColor:"rgba(17,24,39,0.9)",
-  }
+  themeDark: { // navigation bar in dark mode
+      backgroundColor: '#091217',
+      width: 300,
+      height: 50,
+      borderRadius: 55, // Half of height (50) for a clean pill shape
+      borderColor:"#000",
+      borderWidth:1,
+      paddingHorizontal: 10,
+      alignSelf: 'center', // Centers the 300px tab bar horizontally on screen
+      justifyContent: 'center',
+      fontSize: 10,
+      fontFamily: 'Manrope_400Regular',
+    },
+    themeLight: { // navigation bar in light mode
+      backgroundColor: '#fff',
+      width: 300,
+      height: 50,
+      borderRadius: 25, // Half of height (50) for a clean pill shape
+      borderColor:"#fff",
+      borderWidth:1,
+      paddingHorizontal: 10,
+      alignSelf: 'center', // Centers the 300px tab bar horizontally on screen
+      justifyContent: 'flex-end',
+    },
+    tabBarActiveTintColor: '#2563EB',
+    tabBarInactiveTintColor: '#9CA3AF',
+    
 
 });
