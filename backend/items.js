@@ -77,4 +77,52 @@ router.get('/', requireAuth, async (req, res) => {
   }
 });
 
+// DELETE /items/:id
+// Deletes one of the logged in user's clothing items, along with its wash tracker
+// records, and keeps the wardrobe's item_count in sync.
+router.delete('/:id', requireAuth, async (req, res) => {
+  const itemId = Number(req.params.id);
+  if (!Number.isInteger(itemId)) {
+    return res.status(400).json({ error: 'Invalid item id' });
+  }
+
+  let client;
+  try {
+    const wardrobeId = await getOrCreateWardrobe(req.userId);
+    client = await pool.connect();
+    await client.query('BEGIN');
+
+    // Only finds the item if it's in the logged in user's wardrobe,
+    // so nobody can delete someone else's clothes.
+    const owned = await client.query(
+      'SELECT id FROM clothing_item WHERE id = $1 AND wardrobe_id = $2',
+      [itemId, wardrobeId]
+    );
+
+    if (owned.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ error: 'Item not found' });
+    }
+
+    // Clear out the wash tracker records first so nothing points to the deleted item.
+    await client.query('DELETE FROM wash_tracker WHERE clothing_item_id = $1', [itemId]);
+    await client.query('DELETE FROM clothing_item WHERE id = $1', [itemId]);
+
+    // Keep the wardrobe's item_count in sync without letting it go below zero.
+    await client.query(
+      'UPDATE wardrobe SET item_count = GREATEST(item_count - 1, 0), last_updated = NOW() WHERE id = $1',
+      [wardrobeId]
+    );
+
+    await client.query('COMMIT');
+    res.json({ success: true, deletedId: itemId });
+  } catch (err) {
+    if (client) await client.query('ROLLBACK').catch(() => {});
+    console.error('Delete item error:', err);
+    res.status(500).json({ error: 'Something went wrong deleting the item' });
+  } finally {
+    if (client) client.release();
+  }
+});
+
 module.exports = router;
