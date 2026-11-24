@@ -11,7 +11,7 @@ import {
   ScrollView,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useTheme } from '../components/ThemeContext';
+import { useTheme } from '../../components/ThemeContext';
 
 const API_URL = 'http://localhost:3000';
 
@@ -76,43 +76,44 @@ export default function AddItemScreen({ route, navigation }) {
 
   return (
     <ScrollView style={[styles.container, isDark ? styles.containerDark : styles.container]}>
-      <Text style={styles.title}>Add to Closet</Text>
+     {/* <Text style={styles.title}>Add to Closet</Text>*/}
 
-      {imageUrl ? (
+      {imageUrl ? ( // image box 
         <Image source={{ uri: imageUrl }} style={styles.preview} />
       ) : (
-        <View style={styles.placeholder}>
-          <Text style={styles.placeholderText}>No photo selected</Text>
+        <View style={[styles.placeholder, isDark ? styles.placeholderDark : styles.placeholder]}>
+          <Text style={[styles.placeholderText, isDark ? styles.placeholderDarkText : styles.placeholderText]}>No photo selected</Text>
         </View>
       )}
 
-      <TextInput
-        style={styles.input}
+      <TextInput // first text box
+        style={[styles.input, isDark ? styles.inputDark : styles.input]}
         placeholder="Item name (e.g. Blue Denim Jacket)"
         value={itemName}
         onChangeText={setItemName}
       />
-      <TextInput
-        style={styles.input}
+      <TextInput // second text box
+        style={[styles.input, isDark ? styles.inputDark : styles.input]}
         placeholder="Category (e.g. Jacket, Shirt, Shoes)"
         value={category}
         onChangeText={setCategory}
       />
-      <TextInput
-        style={styles.input}
+      <TextInput // third text box 
+        style={[styles.input, isDark ? styles.inputDark : styles.input]}
         placeholder="Color"
         value={color}
         onChangeText={setColor}
       />
-      <TextInput
-        style={[styles.input, styles.textArea]}
+      <TextInput // fourth text box 
+        style={[styles.input, styles.textArea, isDark ? styles.inputDark : styles.input]}
         placeholder="Description (e.g. material, fit, occasion)"
         value={description}
         onChangeText={setDescription}
         multiline
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleSave} disabled={loading}>
+      // save to closet button 
+      <TouchableOpacity style={[styles.button, isDark ? styles.buttonDark : styles.button]} onPress={handleSave} disabled={loading}>
         {loading ? (
           <ActivityIndicator color="#fff" />
         ) : (
@@ -124,7 +125,7 @@ export default function AddItemScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 20 },
+  container: { flex: 1, backgroundColor: '#fff', paddingVertical: 60, paddingHorizontal:20, },
   containerDark: {
     backgroundColor: '#091217',
   },
@@ -139,7 +140,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
+  placeholderDark: {
+    width: '100%',
+    height: 220,
+    borderRadius: 10,
+    backgroundColor: '#000',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
   placeholderText: { color: '#888' },
+  placeholderDarkText: { color: '#fff' },
   input: {
     borderWidth: 1,
     borderColor: '#ddd',
@@ -148,9 +159,26 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     fontSize: 16,
   },
+  inputDark: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    padding: 14,
+    marginBottom: 12,
+    fontSize: 16,
+    color:"#fff"
+  },
   textArea: { height: 90, textAlignVertical: 'top' },
   button: {
     backgroundColor: '#4A3728',
+    borderRadius: 8,
+    padding: 14,
+    alignItems: 'center',
+    marginTop: 8,
+    marginBottom: 40,
+  },
+  buttonDark: {
+    backgroundColor: '#000',
     borderRadius: 8,
     padding: 14,
     alignItems: 'center',

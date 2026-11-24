@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
-import { useTheme } from '../components/ThemeContext';
+import { useTheme } from '../../components/ThemeContext';
 
 const API_URL = 'http://localhost:3000';
 
@@ -239,7 +239,7 @@ export default function ClosetScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-   container: {
+  container: {
     flex: 1,
     backgroundColor: '#fff',
   },

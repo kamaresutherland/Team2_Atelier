@@ -10,6 +10,7 @@ import {
 
 // --- API URL Commented Out ---
 // const API_URL = 'http://localhost:3001/api/items';
+// Description: This file contains the form that allows a user to add a new clothing item to their closet 
 
 const TYPES = ['Top', 'Bottom', 'Dress', 'Outerwear', 'Shoes', 'Accessory', 'Other'];
 const SEASONS = ['All seasons', 'Spring', 'Summer', 'Fall', 'Winter'];

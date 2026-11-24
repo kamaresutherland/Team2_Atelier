@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -6,9 +6,14 @@ import {
   Modal,
   Pressable,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ThemeToggle from './ThemeToggle';
+import {About} from '../components/About';
+
+
+//Description: This file contains the Navigation bar that is used on the Landing page such as login, sign up
 
 // Screen names must match the <Stack.Screen name="..."> entries in your navigator
 const LINKS = [
@@ -19,10 +24,31 @@ const LINKS = [
 ];
 
 
-const LandingBar = ({ theme, setTheme }) => {
+const Atelier_Text = ({ theme }) => {
+  const isDark = theme === 'dark';
+
+  return (
+    <View style={[styles.container,styles.bar, isDark ? styles.barDark : styles.barLight]}>
+      <Text style={[styles.logo, isDark && styles.textDark]}>Atelier</Text>
+    </View>
+  );
+};
+
+
+const LandingBar = ({ theme, setTheme, onSelectSection }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigation = useNavigation();
   const isDark = theme === 'dark';
+
+  const scrollViewRef = useRef(null);
+  const [sectionPositions, setSectionPositions] = useState({});
+  
+    const scrollToSection = (sectionKey) => {
+      const yOffset = sectionPositions[sectionKey]; // looks up location of about or feature 
+      if (yOffset !== undefined && scrollViewRef.current) {
+        scrollViewRef.current.scrollTo({ y: yOffset, animated: true });
+      }
+    };
 
   const goTo = (screen) => {
     setSidebarOpen(false);
@@ -42,14 +68,18 @@ const LandingBar = ({ theme, setTheme }) => {
 
          <View style={[styles.landingBar, isDark ? styles.barDark : styles.barLight]}>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Landing')}>
-          <Text style={[styles.page, isDark && styles.textDark]}>About</Text>
+        {/* in page navigation */}
+
+         <TouchableOpacity onPress={() => onSelectSection('about')}>
+        <Text style={[styles.page, isDark && styles.textDark]}>About</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate('Landing')}>
-          <Text style={[styles.page, isDark && styles.textDark]}>Features</Text>
+        <TouchableOpacity onPress={() => onSelectSection('features')}>
+        <Text style={[styles.page, isDark && styles.textDark]}>Features</Text>
         </TouchableOpacity>
+
       
+        {/* page 2 page navigation */}
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
           <Text style={[styles.page, isDark && styles.textDark]}>Log In</Text>
         </TouchableOpacity>
@@ -108,17 +138,9 @@ const LandingBar = ({ theme, setTheme }) => {
   );
 };
 
-export {LandingBar};
+export {LandingBar, Atelier_Text};
 
 const styles = StyleSheet.create({
-  tab: {
-    paddingVertical: 0,
-    paddingHorizontal: 0,
-    // Add a transparent bottom border by default to prevent layout shift 
-    borderBottomWidth: 3,
-    borderBottomColor: 'transparent', 
-    backgroundColor:'rgba(17,24,39,0.9)',
-  },
   text: {
     fontSize: 16,
     color: '#fff',
@@ -136,9 +158,9 @@ const styles = StyleSheet.create({
     gap: 12,
    // puts it in the middle 
   },
-  landingBar: {
+  landingBar: { // changes items in navigation bar 
     alignItems: 'center',
-    paddingVertical: 0,
+    paddingVertical:0,
     flexDirection: 'row', // needed since View automatically stacks the page links in a column
     gap: 12,
     justifyContent: 'center',
@@ -148,24 +170,15 @@ const styles = StyleSheet.create({
   bar: { // container specifically for page navigation
     flexDirection: 'row',
     alignItems: 'center',
+    paddingHorizontal:20,
+    paddingVertical:10,
+    justifyContent:"center",
   },
   barLight: { backgroundColor: 'rgba(255,255,255,0.85)' }, // changes background of container
   barDark: { backgroundColor: 'rgba(17,24,39,0.9)' }, // changes background of container
-  controlsBar: { justifyContent: 'flex-end' }, // overarching container for navigation and theme toggle 
-
-  logo: { fontSize: 40, fontWeight: '600', color: '#000', fontFamily: 'RockSalt_400Regular'},
+  
+  logo: { fontSize: 60, fontWeight: '200', color: '#000', fontFamily: 'RockSalt_400Regular'},
   textDark: { color: '#fff' },
-
-  iconButton: { padding: 4 },
-  icon: { fontSize: 28, color: '#000' },
-
-  overlay: { flex: 1, flexDirection: 'row' },
-  backdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)' },
-  sidebar: { width: 240, paddingTop: 80, paddingLeft: 32 },
-  sidebarLight: { backgroundColor: '#fff' },
-  sidebarDark: { backgroundColor: '#111827' },
-
-  closeButton: { position: 'absolute', top: 48, right: 16, padding: 4 },
   
 
   

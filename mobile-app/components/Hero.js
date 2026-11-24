@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
+// Description: This file is used for the landing page display such as the images, text, etc..
+
 // Copy your image from frontend/src/assets into mobile-app/assets and match the filename here
 const wardrobeDark = require('../assets/images/wardrobe_dark.png');
 const wardrobeLight = require('../assets/images/wardrobe_light.png');
@@ -152,13 +154,13 @@ const styles = StyleSheet.create({
   },
 
   imageWrapper: {
-    width: '100%',
+    width: '100%',       // Let the wrapper span the container
+    alignItems: 'center', // Center the image inside it
   },
 
   image: {
-    width: '100%',
-    height:'60%',
-    aspectRatio: 2, // adjust to match your image's width/height
-    alignSelf: 'center',
+    width: 350,          // Set a concrete width (adjust as needed)
+    height: 350,         // Set a concrete height (or use aspectRatio: 1 without height)
+    resizeMode: 'contain',
   },
 });

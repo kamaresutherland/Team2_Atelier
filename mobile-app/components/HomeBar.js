@@ -20,6 +20,9 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 //import AddItemScreen from '../screens/AddItemScreen';
 
 
+// Description: This file contains the navigation bar that is used once logged in 
+// Here you can change the styling of the navigation bar, what pages appear on it, where they direct to, etc.
+
 
 const Tab = createBottomTabNavigator();
 
