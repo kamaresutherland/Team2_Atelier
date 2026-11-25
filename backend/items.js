@@ -77,6 +77,64 @@ router.get('/', requireAuth, async (req, res) => {
   }
 });
 
+// GET /items/summary
+// Gives the home page a quick overview of the logged in user's closet:
+// total items, counts by status and category, and the most worn item.
+router.get('/summary', requireAuth, async (req, res) => {
+  try {
+    const wardrobeId = await getOrCreateWardrobe(req.userId);
+
+    const [statusResult, categoryResult, mostWornResult] = await Promise.all([
+      pool.query(
+        `SELECT status, COUNT(*)::int AS count
+         FROM clothing_item
+         WHERE wardrobe_id = $1
+         GROUP BY status`,
+        [wardrobeId]
+      ),
+      pool.query(
+        `SELECT COALESCE(NULLIF(category, ''), 'Other') AS category, COUNT(*)::int AS count
+         FROM clothing_item
+         WHERE wardrobe_id = $1
+         GROUP BY 1
+         ORDER BY 2 DESC`,
+        [wardrobeId]
+      ),
+      pool.query(
+        `SELECT id, item_name, wear_count
+         FROM clothing_item
+         WHERE wardrobe_id = $1 AND wear_count > 0
+         ORDER BY wear_count DESC, item_name
+         LIMIT 1`,
+        [wardrobeId]
+      ),
+    ]);
+
+    // Every status starts at zero so an empty closet still gets numbers back.
+    const byStatus = { clean: 0, worn: 0, dirty: 0 };
+    statusResult.rows.forEach((row) => {
+      byStatus[row.status] = row.count;
+    });
+
+    const byCategory = {};
+    categoryResult.rows.forEach((row) => {
+      byCategory[row.category] = row.count;
+    });
+
+    const totalItems = statusResult.rows.reduce((sum, row) => sum + row.count, 0);
+
+    res.json({
+      totalItems,
+      byStatus,
+      byCategory,
+      mostWorn: mostWornResult.rows[0] || null,
+    });
+  } catch (err) {
+    console.error('Closet summary error:', err);
+    res.status(500).json({ error: 'Something went wrong loading the closet summary' });
+  }
+});
+
 // DELETE /items/:id
 // Deletes one of the logged in user's clothing items, along with its wash tracker
 // records, and keeps the wardrobe's item_count in sync.
